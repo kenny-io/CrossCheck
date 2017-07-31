@@ -6,12 +6,9 @@ package com.example.ekene.crosscheck;
 
 public class DevelopersList {
 
-
-
     private String login;
     private String avatar_url;
     private String html_url;
-
 
     public String getLogin() {
         return login;
@@ -25,12 +22,9 @@ public class DevelopersList {
         return html_url;
     }
 
-
     public DevelopersList(String login, String gitUrl, String avatar_url) {
         this.login = login;
         this.avatar_url = avatar_url;
         this.html_url = gitUrl;
-
     }
-
 }
