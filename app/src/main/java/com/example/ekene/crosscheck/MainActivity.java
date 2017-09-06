@@ -34,61 +34,53 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //setting up recyclerView
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         developersLists = new ArrayList<>();
-
+        //calling the loadUrl method
         loadUrlData();
     }
 
+
+    //defining the loadUrl method ( calls the api for the json data)
     private void loadUrlData() {
 
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
-
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 URL_DATA, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
                 progressDialog.dismiss();
-
                 try {
-
                     JSONObject jsonObject = new JSONObject(response);
-
                     JSONArray array = jsonObject.getJSONArray("items");
-
                     for (int i = 0; i < array.length(); i++){
-
                         JSONObject jo = array.getJSONObject(i);
-
-                        DevelopersList developers = new DevelopersList(jo.getString("login"), jo.getString("html_url"),
+                        DevelopersList developers = new DevelopersList(jo.getString("login"),
+                                jo.getString("html_url"),
                                 jo.getString("avatar_url"));
                         developersLists.add(developers);
-
                     }
-
                     adapter = new DevelopersAdapter(developersLists, getApplicationContext());
                     recyclerView.setAdapter(adapter);
-
                 } catch (JSONException e) {
-
                     e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
-                Toast.makeText(MainActivity.this, "Error" + error.toString(), Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(MainActivity.this, "Network Error", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
             }
         });
 
+        //defining the requestQueue
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }

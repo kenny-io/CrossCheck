@@ -55,11 +55,9 @@ public class DevelopersAdapter extends RecyclerView.Adapter<DevelopersAdapter.Vi
 
         final DevelopersList developersList = developersLists.get(position);
         holder.login.setText(developersList.getLogin());
-
         Picasso.with(context)
                 .load(developersList.getAvatar_url())
                 .into(holder.avatar_url);
-
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
